@@ -1,7 +1,8 @@
 import React from 'react';
 import WeatherIcons from 'react-weathericons';
 import PropTypes from 'prop-types';
-import { CLOUD, CLOUDY, SUN, RAIN, SNOW, WINDY, FOG } from './../constants/weathers';
+import { CLOUD, CLOUDY, SUN, RAIN, SNOW, WINDY, FOG } from './../../../constants/weathers';
+import './style.css';
 
 const icons = {
     [SUN]: 'day-sunny',
@@ -16,17 +17,19 @@ const icons = {
 const getWeatherIcon = (weatherState) => {
     const icon = icons[weatherState];
     let valueIcon = SUN;
+    const sizeIcon = "4x";
 
     if (icon) {
         valueIcon = icon;
     }
-    return <WeatherIcons name={valueIcon} size="2x" />;
+    return <WeatherIcons className="wicon" name={valueIcon} size={sizeIcon} />;
 }
 
 const WeatherTemperature = ({ temperature, weatherState }) => (
-    <div>
+    <div className="weatherTemperatureCont">
         {getWeatherIcon(weatherState)}
-        <span>{`${temperature} C°`}</span>
+        <span className="temperature">{`${temperature}°`}</span> 
+        <span className="temperatureType">{`C`}</span>
     </div>
 );
 
