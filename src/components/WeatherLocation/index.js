@@ -1,13 +1,10 @@
 import React, { Component } from 'react';
+//import convert from 'convert-units';
 import Location from './Location';
 import WeatherData from './WeatherData';
+import { api_weather } from './../../constants/api_url';
 import './styles.css';
 import { SUN } from './../../constants/weathers';
-
-const location = "Buenos Aires";
-const api_key = "5050e931fb63ed263c67e1293bceeb49";
-const url_base_weather = "https://api.openweathermap.org/data/2.5/weather";
-const api_weather = encodeURI(`${url_base_weather}?q=${location}&appid=${api_key}`);
 
 const data = {
     temperature: 5,
@@ -24,6 +21,21 @@ class WeatherLocation extends Component {
             city: 'Medellin - Colombia',
             data
         };
+        console.log("Constructor");
+    }
+
+    componentDidMount() {
+        console.log("componentDidMount");
+    }
+
+    componentDidUpdate(prepProps, prevState) {
+        console.log("componentDidUpdate");
+    }
+
+
+    getTemp = kelvin => {
+        return kelvin;
+        //return convert(kelvin).from("K").to("C").toFixed(2);
     }
 
     handleUpdateClick = () => {
@@ -31,11 +43,11 @@ class WeatherLocation extends Component {
             return response.json();
         }).then(data => {
             let responseApi = {
-                temperature: data.main.temp,
+                temperature: this.getTemp(data.main.temp),
                 weatherState: data.weather[0].main,
                 humidity: data.main.humidity,
                 wind: `${data.wind.speed} m/s`
-            }            
+            }
             this.setState({ data: responseApi });
         });
     }
