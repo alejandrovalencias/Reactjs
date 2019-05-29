@@ -15,11 +15,11 @@ const icons = {
 };
 
 const getWeatherIcon = (weatherState) => {
-    const icon = icons[weatherState];
+    let icon = icons[weatherState];
     let valueIcon = SUN;
     const sizeIcon = "4x";
 
-    if (icon) {
+    if (icons.hasOwnProperty(weatherState) ) {
         valueIcon = icon;
     }
     return <WeatherIcons className="wicon" name={valueIcon} size={sizeIcon} />;
