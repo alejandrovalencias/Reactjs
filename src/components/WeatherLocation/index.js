@@ -1,56 +1,55 @@
 import React, { Component } from 'react';
-//import convert from 'convert-units';
+import convert from 'convert-units';
 import PropTypes from 'prop-types';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Location from './Location';
 import WeatherData from './WeatherData';
-import { api_weather } from './../../constants/api_url';
+import getUrlByCity from './../../services/getUrlWeatherByCity';
 import './styles.css';
 
 class WeatherLocation extends Component {
 
     constructor(props) {
         super(props);
-        const { city } = props;
+
+        const { city,onWeatherLocationClick } = props;
+
         this.state = {
-            city: 'Medellin - Colombia',
-            data: []
+            city,
+            data: [],
+            onWeatherLocationClick
         };
-        console.log("Constructor");
     }
 
     componentDidMount() {
-        console.log("componentDidMount");
         this.handleUpdateClick();
     }
 
-    componentDidUpdate(prepProps, prevState) {
-        console.log("componentDidUpdate");
-    }
-
-    getTemp = kelvin => {
-        return kelvin;
-        //return convert(kelvin).from("K").to("C").toFixed(2);
+    getTemp = kelvin => {    
+        return convert(kelvin).from("K").to("C").toFixed(2);
     }
 
     handleUpdateClick = () => {
+        const api_weather = getUrlByCity(this.state.city);
+
         fetch(api_weather).then(response => {
             return response.json();
         }).then(data => {
             let responseApi = {
                 temperature: this.getTemp(data.main.temp),
-                weatherState: data.weather[0].main,
+                weatherState: data.weather[0].main.toLowerCase(),
                 humidity: data.main.humidity,
                 wind: `${data.wind.speed} m/s`
             }
             this.setState({ data: responseApi });
         });
-    }
+    } 
 
     render() {
-        const { city, data } = this.state;
+        const { city, data, onWeatherLocationClick } = this.state;
+
         return (
-            <div className="weatherLocationCont" >
+            <div className="weatherLocationCont" onClick={onWeatherLocationClick}>
                 <Location city={city} />
                 {data.wind ?
                     <WeatherData data={data} /> :
@@ -63,7 +62,8 @@ class WeatherLocation extends Component {
 }
 
 WeatherLocation.propTypes = {
-    city: PropTypes.string.isRequired
+    city: PropTypes.string.isRequired,
+    onWeatherLocationClick: PropTypes.func,
 }
 
 /*const WeatherLocation = () => (
