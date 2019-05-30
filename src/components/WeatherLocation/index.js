@@ -1,37 +1,32 @@
 import React, { Component } from 'react';
 //import convert from 'convert-units';
+import PropTypes from 'prop-types';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import Location from './Location';
 import WeatherData from './WeatherData';
 import { api_weather } from './../../constants/api_url';
 import './styles.css';
-import { SUN } from './../../constants/weathers';
-
-const data = {
-    temperature: 5,
-    weatherState: SUN,
-    humidity: 35,
-    wind: "10 m/s"
-};
 
 class WeatherLocation extends Component {
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
+        const { city } = props;
         this.state = {
             city: 'Medellin - Colombia',
-            data
+            data: []
         };
         console.log("Constructor");
     }
 
     componentDidMount() {
         console.log("componentDidMount");
+        this.handleUpdateClick();
     }
 
     componentDidUpdate(prepProps, prevState) {
         console.log("componentDidUpdate");
     }
-
 
     getTemp = kelvin => {
         return kelvin;
@@ -53,14 +48,22 @@ class WeatherLocation extends Component {
     }
 
     render() {
+        const { city, data } = this.state;
         return (
             <div className="weatherLocationCont" >
-                <Location city={this.state.city} />
-                <WeatherData data={this.state.data} />
+                <Location city={city} />
+                {data.wind ?
+                    <WeatherData data={data} /> :
+                    <CircularProgress />
+                }
                 <button onClick={this.handleUpdateClick}>Actualizar</button>
             </div>
         );
     }
+}
+
+WeatherLocation.propTypes = {
+    city: PropTypes.string.isRequired
 }
 
 /*const WeatherLocation = () => (
