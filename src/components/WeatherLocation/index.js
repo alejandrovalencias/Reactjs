@@ -11,13 +11,10 @@ class WeatherLocation extends Component {
 
     constructor(props) {
         super(props);
-
-        const { city,onWeatherLocationClick } = props;
-
+        const { city } = props;
         this.state = {
             city,
             data: [],
-            onWeatherLocationClick
         };
     }
 
@@ -25,8 +22,8 @@ class WeatherLocation extends Component {
         this.handleUpdateClick();
     }
 
-    getTemp = kelvin => {    
-        return convert(kelvin).from("K").to("C").toFixed(2);
+    getTemp = kelvin => {
+        return convert(kelvin).from("K").to("C").toFixed(0);
     }
 
     handleUpdateClick = () => {
@@ -43,10 +40,11 @@ class WeatherLocation extends Component {
             }
             this.setState({ data: responseApi });
         });
-    } 
+    }
 
     render() {
-        const { city, data, onWeatherLocationClick } = this.state;
+        const { onWeatherLocationClick } = this.props;
+        const { city, data } = this.state;
 
         return (
             <div className="weatherLocationCont" onClick={onWeatherLocationClick}>
