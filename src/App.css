@@ -21,7 +21,16 @@
 
 .details{
 background: #999;
-height: 100vh;
+height: 85vh;
 width: 100%;
+overflow: auto;
 }
 
+@media(max-width:64vh){
+  .details{
+    background: #999;
+    height: calc(100% - 40px);
+    width: 100%;
+    overflow: auto;
+    }
+}

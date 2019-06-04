@@ -5,7 +5,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Typography from '@material-ui/core/Typography';
 import Toolbar from '@material-ui/core/Toolbar';
 import LocationList from './components/LocationList';
-import ForecastExtended from './components/ForcastExtended';
+import ForecastExtended from './components/ForecastExtended';
 import './App.css';
 
 const cities = [
@@ -22,8 +22,9 @@ class App extends Component {
         };
     }
 
-    handleSelectionLocation = () => {
-        console.log("handleSelectionLocation");
+    handleSelectionLocation = (city) => {
+        this.setState({city});
+        //console.log("handleSelectionLocation");
     }
 
     render() {
@@ -45,7 +46,10 @@ class App extends Component {
                     <Col xs={12} md={6}>
                         <Paper elevation={4}>
                             <div className="details">
-                                <ForecastExtended city={this.state.city} />
+                            {!this.state.city ?
+                             <h1> No selecciono ciudad</h1>:
+                             <ForecastExtended city={this.state.city} />
+                            }                             
                             </div>
                         </Paper>
                     </Col>
